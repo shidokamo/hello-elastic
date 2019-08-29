@@ -3,7 +3,7 @@ LOG_INTEVAL =
 export
 
 log:
-	pipenv run python -u hello.py
+	pipenv run python -u log.py
 clean:
 	-rm -rf *.log*
 fluentd:
