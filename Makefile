@@ -1,6 +1,19 @@
 ELASTIC_VERSION=7.3.1
+LOG_INTEVAL =
+export
 
-install:install-elasticsearch
+log:
+	pipenv run python -u hello.py
+clean:
+	-rm -rf *.log*
+fluentd:
+	bunder exec fluentd -c fluent.conf
+
+install:install-elasticsearch install-kibana install-python install-ruby
+install-python:
+	pipenv install
+install-ruby:
+	bundler install
 install-elasticsearch:
 	wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ELASTIC_VERSION}-linux-x86_64.tar.gz
 	wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ELASTIC_VERSION}-linux-x86_64.tar.gz.sha512
