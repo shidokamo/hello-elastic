@@ -14,7 +14,8 @@ make install
 Kibana の設定ファイルを変更します。
 Makefile からインストールした場合は、`${KIBANA_HOME}/config/kibana.yml` を編集してください。
 
-nginx のベーシック認証を使う場合は、
+nginx のベーシック認証を使う場合は、以下のようにローカルホストからの通信のみを許可するように
+してください。
 ```
 server.host: "localhost"
 server.name: "kibana"
@@ -30,4 +31,10 @@ make elasticsearch
 ```
 make kibana
 ```
+
+## Nginx のインストール
+無償版では、kibana は起動時に認証を全く行わないので、nginx のベーシック認証を
+通して、保護を行うことを推奨します。
+詳しくはのちに記載。
+
 
