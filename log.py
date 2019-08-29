@@ -2,7 +2,7 @@ import time
 import random
 import os
 from datetime import datetime
-from pycountry import countries
+from geopy.geocoders import Nominatim
 import logging
 from logging.config import dictConfig
 
@@ -56,15 +56,21 @@ console.info("------------------------------------------------------------------
 console.info(" logging : interval = {} sec".format(os.environ.get('LOG_INTERVAL')))
 console.info("------------------------------------------------------------------")
 i = 0
+category_index = list(range(10))
 while True:
-    country = random.sample(list(countries), 1).pop()
-    console.info("[{:8}] Hello {}!".format(i, country.name))
+    # Generate random longitude and latitude
+    lat = round(random.uniform(0, 90), 6)
+    lon = round(random.uniform(0, 90), 6)
+    console.info("[{:8}] Latitude: {}, Longitude: {}".format(i, lat, lon))
     try:
-        fwrite.info("count:{:8}\tcountry-name:{}\tofficial-country-name:{}".format(i, country.name, country.official_name))
+        location = geolocator.reverse("{}, {}".format(lat, lon))
+        # Add some random values
+        location['cost'] = random.gauss(500, 100)
+        location['score'] = random.random()
+        location['category'] = random.sample(category_index, k=1)[0]
+        fwrite.info(location.raw) # Dump raw JSON into the file
     except Exception as e:
-        # Sometimes there is no official name
-        fwrite.warning("message:{}'s official name is same as common name".format(country.name))
-        fwrite.info("count:{:8}\tcountry-name:{}\tofficial-country-name:{}".format(i, country.name, ""))
+        console.warning(e);
     if os.environ.get('LOG_INTERVAL'):
         time.sleep(float(os.environ['LOG_INTERVAL']))
     i += 1
