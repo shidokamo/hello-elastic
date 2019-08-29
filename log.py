@@ -15,6 +15,9 @@ dictConfig({
         'ltsv': {
             'format': 'time:%(asctime)s\tlevel:%(levelname)s\t%(message)s',
         },
+        'json': {
+            'format': "{'time':'%(asctime)s','level':'%(levelname)s','data':%(message)s}",
+        },
     },
     'handlers': {
         'console': {
@@ -25,7 +28,7 @@ dictConfig({
         'file-rotate': {
             'class': 'logging.handlers.TimedRotatingFileHandler',
             'level': 'DEBUG',
-            'formatter': 'ltsv',
+            'formatter': 'json',
             'filename': 'app.log',
             'interval': 5,
             'when': 'S',
