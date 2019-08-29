@@ -7,7 +7,7 @@ log:
 clean:
 	-rm -rf *.log*
 fluentd:
-	bunder exec fluentd -c fluent.conf
+	bundler exec fluentd -c fluent.conf
 
 install:install-elasticsearch install-kibana install-python install-ruby
 install-python:
