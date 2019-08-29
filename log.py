@@ -66,9 +66,9 @@ while True:
     try:
         location = geolocator.reverse("{}, {}".format(lat, lon))
         # Add some random values
-        location['cost'] = random.gauss(500, 100)
-        location['score'] = random.random()
-        location['category'] = random.sample(category_index, k=1)[0]
+        location.raw['cost'] = random.gauss(500, 100)
+        location.raw['score'] = random.random()
+        location.raw['category'] = random.sample(category_index, k=1)[0]
         fwrite.info(location.raw) # Dump raw JSON into the file
     except Exception as e:
         console.warning(e);
