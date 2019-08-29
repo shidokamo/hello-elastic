@@ -17,6 +17,7 @@ dictConfig({
             'format': 'time:%(asctime)s\tlevel:%(levelname)s\t%(message)s',
         },
         'json': {
+            #  TODO: 構造化データの中に、level などの情報を入れたいのだがやり方がわからない。
             # 'format': "{'time':'%(asctime)s','level':'%(levelname)s','data':%(message)s}",
             'format': "%(message)s",
         },
