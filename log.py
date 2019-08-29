@@ -1,6 +1,7 @@
 import time
 import random
 import os
+import json
 from datetime import datetime
 from geopy.geocoders import Nominatim
 import logging
@@ -16,7 +17,8 @@ dictConfig({
             'format': 'time:%(asctime)s\tlevel:%(levelname)s\t%(message)s',
         },
         'json': {
-            'format': "{'time':'%(asctime)s','level':'%(levelname)s','data':%(message)s}",
+            # 'format': "{'time':'%(asctime)s','level':'%(levelname)s','data':%(message)s}",
+            'format': "%(message)s",
         },
     },
     'handlers': {
@@ -72,7 +74,7 @@ while True:
         location.raw['cost'] = random.gauss(500, 100)
         location.raw['score'] = random.random()
         location.raw['category'] = random.sample(category_index, k=1)[0]
-        fwrite.info(location.raw) # Dump raw JSON into the file
+        fwrite.info(json.dumps(location.raw)) # Dump raw JSON into the file
     except Exception as e:
         console.warning(e);
     if os.environ.get('LOG_INTERVAL'):
