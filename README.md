@@ -37,4 +37,19 @@ make kibana
 通して、保護を行うことを推奨します。
 詳しくはのちに記載。
 
+## fluentd の起動
+ローカルのファイルを入力として、追い続けます。
+```
+make fluentd
+```
+
+## Python からログを吐く
+ファイルローテートを行いながら、ログをファイルに記録し続けます。
+```
+make log LOG_INTERVAL=1  # Slow rate
+make log                 # Max rate
+```
+
+
+
 
