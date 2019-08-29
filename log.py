@@ -26,7 +26,7 @@ dictConfig({
             'class': 'logging.handlers.TimedRotatingFileHandler',
             'level': 'DEBUG',
             'formatter': 'ltsv',
-            'filename': 'python.log',
+            'filename': 'app.log',
             'interval': 5,
             'when': 'S',
             'backupCount': 5,
@@ -56,6 +56,7 @@ console.info("------------------------------------------------------------------
 console.info(" logging : interval = {} sec".format(os.environ.get('LOG_INTERVAL')))
 console.info("------------------------------------------------------------------")
 i = 0
+geolocator = Nominatim(user_agent="app")
 category_index = list(range(10))
 while True:
     # Generate random longitude and latitude
