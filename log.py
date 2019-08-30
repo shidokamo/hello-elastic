@@ -72,16 +72,14 @@ JAPAN_LAT_MIN = 30
 JAPAN_LON_MAX = 145
 JAPAN_LON_MIN = 128
 
-# 任意の位置情報がアメリカに属するかどうか確認するメソッド
+# 任意の位置情報が GEOJSON の領域に属するかどうか確認するメソッド
 # Usage : usa_region(34.699134, 135.495218)
 def within_region(lat, lon):
     point = Point(lon, lat) # GEO_JSON uses unusual (lon, lat) order !!
     for feature in GEO_JSON['features']:
 #        polygon = Polygon(feature['geometry']['coordinates'])
         polygon = shape(feature['geometry'])
-        # console.debug(ls)
         if polygon.contains(point):
-        # if point.within(polygon):
             return True
     return False
 
