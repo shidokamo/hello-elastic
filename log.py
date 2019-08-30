@@ -94,7 +94,7 @@ while True:
     # lat = round(random.uniform(USA_LAT_MIN, USA_LAT_MAX), 6)
     # lon = round(random.uniform(USA_LON_MIN, USA_LON_MAX), 6)
     lat = round(random.uniform(JAPAN_LAT_MIN, JAPAN_LAT_MAX), 6)
-    lon = round(random.uniform(JAPAN_LON_MIN, JAPAN_LON_MAX), 6)
+    lon = round(random.gauss(138.7274, 5), 6)
     console.info("[{:8}] Latitude: {}, Longitude: {}".format(i, lat, lon))
     try:
         if within_region(lat, lon):
