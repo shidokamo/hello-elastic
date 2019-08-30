@@ -7,8 +7,11 @@ curl -X PUT "localhost:9200/_template/template_1?pretty" -H 'Content-Type: appli
   },
   "mappings": {
     "properties": {
-      "time": {
+      "date": {
         "type": "date"
+      },
+      "tag": {
+        "type": "keyword"
       },
       "host": {
         "type": "keyword"
