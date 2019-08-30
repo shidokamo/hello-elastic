@@ -87,7 +87,8 @@ console.info("------------------------------------------------------------------
 console.info(" logging : interval = {} sec".format(os.environ.get('LOG_INTERVAL')))
 console.info("------------------------------------------------------------------")
 i = 0
-category_index = list(range(10))
+# Waighted category
+category_index = [1,1,1,1,2,2,3,3,3,3,3,3,3,4,4,4,4,4,5,6,6,6,6,6,7,7,7,8,8,8,8,8,9,9,10,10,10,]
 while True:
     # Generate random longitude and latitude
     # lat = round(random.uniform(USA_LAT_MIN, USA_LAT_MAX), 6)
