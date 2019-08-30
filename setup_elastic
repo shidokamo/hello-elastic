@@ -8,11 +8,9 @@ curl -X PUT "localhost:9200/_template/template_1?pretty" -H 'Content-Type: appli
   "mappings": {
     "properties": {
       "host": {
-        "index": "not_analyzed",
         "type": "keyword"
       },
       "insert-id": {
-        "index": "not_analyzed",
         "type": "keyword"
       },
       "location": {
