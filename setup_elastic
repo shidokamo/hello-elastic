@@ -1,13 +1,13 @@
 #!/bin/sh
 curl -X PUT "localhost:9200/_template/template_1?pretty" -H 'Content-Type: application/json' -d'
 {
-  "index_patterns": ["app*"],
+  "index_patterns": ["logstash*"],
   "settings": {
     "number_of_shards": 1
   },
   "mappings": {
     "properties": {
-      "date": {
+      "@timestamp": {
         "type": "date"
       },
       "tag": {
@@ -23,10 +23,10 @@ curl -X PUT "localhost:9200/_template/template_1?pretty" -H 'Content-Type: appli
         "type": "geo_point"
       },
       "cost": {
-        "type": "double"
+        "type": "float"
       },
       "score": {
-        "type": "double"
+        "type": "float"
       },
       "category": {
         "type": "integer"
