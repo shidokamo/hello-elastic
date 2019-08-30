@@ -66,7 +66,7 @@ GEO_JSON = json.load(open(GEO_JSON_PATH,'r'))
 # 任意の位置情報がアメリカに属するかどうか確認するメソッド
 # Usage : usa_region(34.699134, 135.495218)
 def usa_region(lat, lon):
-    point = Point(lon, lat)
+    point = Point(lon, lat) # GEO_JSON uses unusual (lon, lat) order !!
     for feature in GEO_JSON['features']:
         polygon = shape(feature['geometry'])
         if polygon.contains(point):
@@ -80,8 +80,8 @@ i = 0
 category_index = list(range(10))
 while True:
     # Generate random longitude and latitude
-    lat = round(random.uniform(0, 90), 6)
-    lon = round(random.uniform(0, 90), 6)
+    lat = round(random.uniform(-90, 90), 6)
+    lon = round(random.uniform(-180, 180), 6)
     console.info("[{:8}] Latitude: {}, Longitude: {}".format(i, lat, lon))
     try:
         if usa_region(lat, lon):
@@ -93,7 +93,9 @@ while True:
                     'score': random.random(),
                     'category': random.sample(category_index, k=1)[0],
                     }
-        fwrite.info(json.dumps(data)) # Dump raw JSON into the file
+            fwrite.info(json.dumps(data)) # Dump raw JSON into the file
+        else:
+            console.info("Latitude: {}, Longitude: {} is not in USA region".format(lat, lon))
     except Exception as e:
         console.warning(e);
     if os.environ.get('LOG_INTERVAL'):
