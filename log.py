@@ -98,8 +98,10 @@ while True:
     try:
         if within_region(lat, lon):
             data = {
-                    'lat': lat,
-                    'lon': lon,
+                    'location': {
+                        'lat': lat,
+                        'lon': lon,
+                    },
                     # Add some random values
                     'cost': random.gauss(500, 100),
                     'score': random.random(),
