@@ -6,6 +6,7 @@ from datetime import datetime
 from geopy.geocoders import Nominatim
 import logging
 from logging.config import dictConfig
+from shapely.geometry import shape, Point
 
 dictConfig({
     'version': 1,
@@ -58,11 +59,24 @@ dictConfig({
 console = logging.getLogger('console')
 fwrite  = logging.getLogger('file')
 
+SOURCE_PATH = os.path.dirname(os.path.abspath(__file__))
+GEO_JSON_PATH = SOURCE_PATH + "/gz_2010_us_outline_20m.json"
+GEO_JSON = json.load(open(GEO_JSON_PATH,'r'))
+
+# 任意の位置情報がアメリカに属するかどうか確認するメソッド
+# Usage : usa_region(34.699134, 135.495218)
+def usa_region(lat, lon):
+    point = Point(lon, lat)
+    for feature in GEO_JSON['features']:
+        polygon = shape(feature['geometry'])
+        if polygon.contains(point):
+            return True
+    return False
+
 console.info("------------------------------------------------------------------")
 console.info(" logging : interval = {} sec".format(os.environ.get('LOG_INTERVAL')))
 console.info("------------------------------------------------------------------")
 i = 0
-geolocator = Nominatim(user_agent="app")
 category_index = list(range(10))
 while True:
     # Generate random longitude and latitude
@@ -70,12 +84,16 @@ while True:
     lon = round(random.uniform(0, 90), 6)
     console.info("[{:8}] Latitude: {}, Longitude: {}".format(i, lat, lon))
     try:
-        location = geolocator.reverse("{}, {}".format(lat, lon))
-        # Add some random values
-        location.raw['cost'] = random.gauss(500, 100)
-        location.raw['score'] = random.random()
-        location.raw['category'] = random.sample(category_index, k=1)[0]
-        fwrite.info(json.dumps(location.raw)) # Dump raw JSON into the file
+        if usa_region(lat, lon):
+            data = {
+                    'lat': lat,
+                    'lon': lon,
+                    # Add some random values
+                    'cost': random.gauss(500, 100),
+                    'score': random.random(),
+                    'category': random.sample(category_index, k=1)[0],
+                    }
+        fwrite.info(json.dumps(data)) # Dump raw JSON into the file
     except Exception as e:
         console.warning(e);
     if os.environ.get('LOG_INTERVAL'):
