@@ -1,41 +1,17 @@
 # Hello Elastic
 Elasticsearch + Kibana を動かしてみるサンプルです。
 
+## データ
+ランダムに生成したアメリカ内の位置情報を出力します。
+領域判定に使う geojson データとして、
+http://eric.clst.org/tech/usgeojson/
+を用いています。
+
+オリジナルのデータは、The Census Bureau によって生成されました。
+
 ## インストール
-Elasticsearch をいずれかの方法でインストールしてください。
-
-Makefile を使ってインストールする場合は、
-
-```
-make install
-```
-
-## Kibana の設定
-Kibana の設定ファイルを変更します。
-Makefile からインストールした場合は、`${KIBANA_HOME}/config/kibana.yml` を編集してください。
-
-nginx のベーシック認証を使う場合は、以下のようにローカルホストからの通信のみを許可するように
-してください。
-```
-server.host: "localhost"
-server.name: "kibana"
-elasticsearch.hosts: ["http://localhost:9200"]
-```
-
-## Elasticsearch の起動
-```
-make elasticsearch
-```
-
-## Kibana  の起動
-```
-make kibana
-```
-
-## Nginx のインストール
-無償版では、kibana は起動時に認証を全く行わないので、nginx のベーシック認証を
-通して、保護を行うことを推奨します。
-詳しくはのちに記載。
+Elasticsearch + Kibana をいずれかの方法でインストールし、設定を行い、起動してください。
+Elasticsearch は、localhost:9200 である必要があります。
 
 ## fluentd の起動
 ローカルのファイルを入力として、追い続けます。
