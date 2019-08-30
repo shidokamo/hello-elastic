@@ -6,6 +6,8 @@ log:
 	pipenv run python -u log.py
 clean:
 	-rm -rf *.log*
+elastic:
+	./setup_elastic
 fluentd:
 	bundler exec fluentd -c fluent.conf
 
