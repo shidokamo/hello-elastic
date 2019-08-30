@@ -6,7 +6,7 @@ from datetime import datetime
 from geopy.geocoders import Nominatim
 import logging
 from logging.config import dictConfig
-from shapely.geometry import shape, Point
+from shapely.geometry import shape, Point, LineString
 
 dictConfig({
     'version': 1,
@@ -62,14 +62,17 @@ fwrite  = logging.getLogger('file')
 SOURCE_PATH = os.path.dirname(os.path.abspath(__file__))
 GEO_JSON_PATH = SOURCE_PATH + "/gz_2010_us_outline_20m.json"
 GEO_JSON = json.load(open(GEO_JSON_PATH,'r'))
+USA_LAT_MAX = 50
+USA_LAT_MIN = 24
+USA_LON_MAX = -65
+USA_LON_MIN = -125
 
 # 任意の位置情報がアメリカに属するかどうか確認するメソッド
 # Usage : usa_region(34.699134, 135.495218)
 def usa_region(lat, lon):
     point = Point(lon, lat) # GEO_JSON uses unusual (lon, lat) order !!
     for feature in GEO_JSON['features']:
-        polygon = shape(feature['geometry'])
-        if polygon.contains(point):
+        if LineString(feature['geometry']['coordinates']).contains(point):
             return True
     return False
 
@@ -80,8 +83,8 @@ i = 0
 category_index = list(range(10))
 while True:
     # Generate random longitude and latitude
-    lat = round(random.uniform(-90, 90), 6)
-    lon = round(random.uniform(-180, 180), 6)
+    lat = round(random.uniform(USA_LAT_MIN, USA_LAT_MAX), 6)
+    lon = round(random.uniform(USA_LON_MIN, USA_LON_MAX), 6)
     console.info("[{:8}] Latitude: {}, Longitude: {}".format(i, lat, lon))
     try:
         if usa_region(lat, lon):
@@ -95,7 +98,7 @@ while True:
                     }
             fwrite.info(json.dumps(data)) # Dump raw JSON into the file
         else:
-            console.info("Latitude: {}, Longitude: {} is not in USA region".format(lat, lon))
+            console.info("Latitude: {}, Longitude: {} is not in the USA region".format(lat, lon))
     except Exception as e:
         console.warning(e);
     if os.environ.get('LOG_INTERVAL'):
