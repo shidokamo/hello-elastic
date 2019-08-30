@@ -6,7 +6,7 @@ from datetime import datetime
 from geopy.geocoders import Nominatim
 import logging
 from logging.config import dictConfig
-from shapely.geometry import shape, Point, LineString
+from shapely.geometry import shape, Point, Polygon
 
 dictConfig({
     'version': 1,
@@ -60,19 +60,28 @@ console = logging.getLogger('console')
 fwrite  = logging.getLogger('file')
 
 SOURCE_PATH = os.path.dirname(os.path.abspath(__file__))
-GEO_JSON_PATH = SOURCE_PATH + "/gz_2010_us_outline_20m.json"
+# GEO_JSON_PATH = SOURCE_PATH + "/gz_2010_us_outline_20m.json"
+GEO_JSON_PATH = SOURCE_PATH + "/japan_outline.geojson"
 GEO_JSON = json.load(open(GEO_JSON_PATH,'r'))
 USA_LAT_MAX = 50
 USA_LAT_MIN = 24
 USA_LON_MAX = -65
 USA_LON_MIN = -125
+JAPAN_LAT_MAX = 46
+JAPAN_LAT_MIN = 20
+JAPAN_LON_MAX = 154
+JAPAN_LON_MIN = 122
 
 # 任意の位置情報がアメリカに属するかどうか確認するメソッド
 # Usage : usa_region(34.699134, 135.495218)
-def usa_region(lat, lon):
+def within_region(lat, lon):
     point = Point(lon, lat) # GEO_JSON uses unusual (lon, lat) order !!
     for feature in GEO_JSON['features']:
-        if LineString(feature['geometry']['coordinates']).contains(point):
+#        polygon = Polygon(feature['geometry']['coordinates'])
+        polygon = shape(feature['geometry'])
+        # console.debug(ls)
+        if polygon.contains(point):
+        # if point.within(polygon):
             return True
     return False
 
@@ -83,11 +92,13 @@ i = 0
 category_index = list(range(10))
 while True:
     # Generate random longitude and latitude
-    lat = round(random.uniform(USA_LAT_MIN, USA_LAT_MAX), 6)
-    lon = round(random.uniform(USA_LON_MIN, USA_LON_MAX), 6)
+    # lat = round(random.uniform(USA_LAT_MIN, USA_LAT_MAX), 6)
+    # lon = round(random.uniform(USA_LON_MIN, USA_LON_MAX), 6)
+    lat = round(random.uniform(JAPAN_LAT_MIN, JAPAN_LAT_MAX), 6)
+    lon = round(random.uniform(JAPAN_LON_MIN, JAPAN_LON_MAX), 6)
     console.info("[{:8}] Latitude: {}, Longitude: {}".format(i, lat, lon))
     try:
-        if usa_region(lat, lon):
+        if within_region(lat, lon):
             data = {
                     'lat': lat,
                     'lon': lon,
@@ -98,7 +109,7 @@ while True:
                     }
             fwrite.info(json.dumps(data)) # Dump raw JSON into the file
         else:
-            console.info("Latitude: {}, Longitude: {} is not in the USA region".format(lat, lon))
+            console.info("Latitude: {}, Longitude: {} is not within the region".format(lat, lon))
     except Exception as e:
         console.warning(e);
     if os.environ.get('LOG_INTERVAL'):
