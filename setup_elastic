@@ -1,0 +1,34 @@
+#!/bin/sh
+curl -X PUT "localhost:9200/_template/template_1?pretty" -H 'Content-Type: application/json' -d'
+{
+  "index_patterns": ["app*"],
+  "settings": {
+    "number_of_shards": 1
+  },
+  "mappings": {
+    "properties": {
+      "host": {
+        "index": "not_analyzed",
+        "type": "keyword"
+      },
+      "insert-id": {
+        "index": "not_analyzed",
+        "type": "keyword"
+      },
+      "location": {
+        "type": "geo_point"
+      },
+      "cost": {
+        "type": "double"
+      },
+      "score": {
+        "type": "double"
+      },
+      "category": {
+        "type": "integer"
+      }
+    }
+  }
+}
+'
+
