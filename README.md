@@ -17,8 +17,13 @@ https://gist.github.com/shimizu/627b37e303efaf4045f637322e9898ee
 Elasticsearch + Kibana をいずれかの方法でインストールし、設定を行い、起動してください。
 Elasticsearch は、localhost:9200 である必要があります。
 
+## elasticsearch のマッピングの設定
+```
+make elastic
+```
+
 ## fluentd の起動
-ローカルのファイルを入力として、追い続けます。
+ローカルのファイルを入力として、起動します。
 ```
 make fluentd
 ```
@@ -29,7 +34,4 @@ make fluentd
 make log LOG_INTERVAL=1  # Slow rate
 make log                 # Max rate
 ```
-
-
-
 
