@@ -109,8 +109,8 @@ while True:
                     }
             fwrite.info(json.dumps(data)) # Dump raw JSON into the file
         else:
-            next
-            # console.info("Latitude: {}, Longitude: {} is not within the region".format(lat, lon))
+            console.info("Latitude: {}, Longitude: {} is not within the region".format(lat, lon))
+            continue
         console.info("[{:8}] Latitude: {}, Longitude: {}".format(i, lat, lon))
     except Exception as e:
         console.warning(e);
