@@ -95,7 +95,6 @@ while True:
     # lon = round(random.uniform(USA_LON_MIN, USA_LON_MAX), 6)
     lat = round(random.uniform(JAPAN_LAT_MIN, JAPAN_LAT_MAX), 6)
     lon = round(random.gauss(138.7274, 5), 6)
-    console.info("[{:8}] Latitude: {}, Longitude: {}".format(i, lat, lon))
     try:
         if within_region(lat, lon):
             data = {
@@ -110,7 +109,9 @@ while True:
                     }
             fwrite.info(json.dumps(data)) # Dump raw JSON into the file
         else:
-            console.info("Latitude: {}, Longitude: {} is not within the region".format(lat, lon))
+            next
+            # console.info("Latitude: {}, Longitude: {} is not within the region".format(lat, lon))
+        console.info("[{:8}] Latitude: {}, Longitude: {}".format(i, lat, lon))
     except Exception as e:
         console.warning(e);
     if os.environ.get('LOG_INTERVAL'):
